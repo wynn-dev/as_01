@@ -1,4 +1,4 @@
-# Pseudocode
+# CSE11C Assignment 1
 
 Implemenation plan for pow subroutine. Here's a typescript syntax-ish spec because I love typescript.
 
