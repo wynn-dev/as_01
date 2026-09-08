@@ -22,6 +22,16 @@ main:
     movq $message, %rdi # On Linux x86-64 rdi holds a functions's first pointer or integer argument
     call printf 
     
+    # Practice
+    #     movq $6, %rdi # Input for the subroutine
+    #     movq $4, %rsi
+    #     call practice
+    #     movq %rax, %rsi
+
+    #     movq $0, %rax
+    #     movq $result_format, %rdi
+    #     call printf
+
     /*
         print arguments
         Address of input: rdi
@@ -79,6 +89,39 @@ main:
     Second integer argument: rsi
     Integer result: rax
 */
+
+/*
+    Practice subroutine
+    Adds numbers from 1 through a given number
+    Input: rdi
+    Counter: rcx
+    Running total, eventually return value: rax
+*/
+# practice:
+#     /*
+#         The loop:
+#         If zero -> go to the finish
+#             Otherwise:
+#                 Add the counter to the total
+#                 Decrease the couter
+#                 Jump back to the check
+#         Finish:
+#             Return
+#     */
+#     movq %rdi, %rcx # Move the wanted number into the counter
+#     movq $0, %rax # Setup rax
+#
+#     .Lrepeat:
+#         cmpq $0, %rcx
+#         je .Ldone
+#
+#         addq %rcx, %rax
+#         decq %rcx # Decrease the counter by 1
+#
+#     jnz .Lrepeat
+#
+#     .Ldone:
+#         ret
 
 pow:
     /*
