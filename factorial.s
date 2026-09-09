@@ -4,13 +4,11 @@
 message: .asciz "Assignment 1: Powers\nName: Ege Cansu, Weishang Lu\nnetID: ecansu, weishanglu\n\n"
 result_format: .asciz "Result: %ld\n"
 input_format: .asciz "%ld"
-base_input_prompt: .asciz "Base input: "
-exponent_input_prompt: .asciz "Exponent input: "
+number_input_prompt: .asciz "Number input: "
 
 .bss
 .align 8
-base_input: .zero 8
-exponent_input: .zero 8
+number_input: .zero 8
 
 .text
 .globl main
@@ -36,20 +34,11 @@ main:
     */
 
     movq $0, %rax
-    movq $base_input_prompt, %rdi
+    movq $number_input_prompt, %rdi
     call printf
 
     movq $0, %rax
-    movq $base_input, %rsi
-    movq $input_format, %rdi
-    call scanf
-
-    movq $0, %rax
-    movq $exponent_input_prompt, %rdi
-    call printf
-
-    movq $0, %rax
-    movq $exponent_input, %rsi
+    movq $number_input, %rsi
     movq $input_format, %rdi
     call scanf
 
@@ -59,9 +48,8 @@ main:
         Copies the value: movq base_input(%rip), %rsi
     */
 
-    movq base_input(%rip), %rdi # (%rip) is a way to locate that memory relative to the current instruction. the assembler and linker calculate the offset for you.
-    movq exponent_input(%rip), %rsi
-    call pow
+    movq number_input(%rip), %rdi # (%rip) is a way to locate that memory relative to the current instruction. the assembler and linker calculate the offset for you.
+    call factorial
     movq %rax, %rsi # Copies result into there printf expects second argument, for replacing %ld
 
     movq $0, %rax
@@ -80,30 +68,31 @@ main:
     Integer result: rax
 */
 
-pow:
+factorial:
     /*
-        Let result = 1
-        First input (x): rdi
-        Second input (y): rsi
+        Number input (n): rdi
         Counter: rcx
-        Running total, eventually return value: rax
+        Result, eventually return value: rax
     */
 
     # Stack frame
     pushq %rbp
     movq %rsp, %rbp
 
-    movq %rsi, %rcx # Move the wanted multiplication count into the counter
+    # Keep looping while counter (rcx) <= input (rdi)
+
+    movq $2, %rcx # Move 2 into counter
+
     movq $1, %rax # Let result be 1
 
     .Lrepeat:
-        cmpq $0, %rcx # When counter reaches 0, its done
-        je .Ldone
+        cmpq %rdi, %rcx # Loop while counter (rcx) <= input (rdi)
+        jg .Ldone
 
-        imulq %rdi, %rax
-        decq %rcx # Decrease the counter by 1
+        imulq %rcx, %rax
+        incq %rcx # Increase the counter by 1
 
-    jnz .Lrepeat
+    jmp .Lrepeat
 
     .Ldone:
         # Stack frame
