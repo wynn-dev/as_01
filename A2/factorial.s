@@ -1,7 +1,7 @@
 .att_syntax prefix
 
 .section .rodata
-message: .asciz "Assignment 1: Powers\nName: Ege Cansu, Weishang Lu\nnetID: ecansu, weishanglu\n\n"
+message: .asciz "Assignment 2: Factorial\nName: Ege Cansu, Weishang Lu\nnetID: ecansu, weishanglu\n\n"
 result_format: .asciz "Result: %ld\n"
 input_format: .asciz "%ld"
 number_input_prompt: .asciz "Number input: "
@@ -13,11 +13,11 @@ number_input: .zero 8
 .text
 .globl main
 main:
-    pushq %rbp # We are about tp use rbp, so save its old value. pushq stores the value in the stack
-    movq %rsp, %rbp # Copy current stack addr into rbp 
+    pushq %rbp              # We are about tp use rbp, so save its old value. pushq stores the value in the stack
+    movq %rsp, %rbp         # Copy current stack addr into rbp 
     
-    movq $0, %rax # Callig rules require the low byte of rax to indicate how many vector registers carry arguments, mine uses none so zero is appropriate
-    movq $message, %rdi # On Linux x86-64 rdi holds a functions's first pointer or integer argument
+    movq $0, %rax           # Callig rules require the low byte of rax to indicate how many vector registers carry arguments, mine uses none so zero is appropriate
+    movq $message, %rdi     # On Linux x86-64 rdi holds a functions's first pointer or integer argument
     call printf 
     
     /*
@@ -48,18 +48,18 @@ main:
         Copies the value: movq base_input(%rip), %rsi
     */
 
-    movq number_input(%rip), %rdi # (%rip) is a way to locate that memory relative to the current instruction. the assembler and linker calculate the offset for you.
+    movq number_input(%rip), %rdi   # (%rip) is a way to locate that memory relative to the current instruction. the assembler and linker calculate the offset for you.
     call factorial
-    movq %rax, %rsi # Copies result into there printf expects second argument, for replacing %ld
+    movq %rax, %rsi                 # Copies result into there printf expects second argument, for replacing %ld
 
     movq $0, %rax
     movq $result_format, %rdi
     call printf
 
-    movq $0, %rax # Put return value in rax
-    movq %rbp, %rsp # Move the stack pointer back to bookmarked position
-    popq %rbp # Restore old rbp from the stack, then move rsp up 8 bytes
-    ret # Now caller's register is restored and the return addr is on top
+    movq $0, %rax                   # Put return value in rax
+    movq %rbp, %rsp                 # Move the stack pointer back to bookmarked position
+    popq %rbp                       # Restore old rbp from the stack, then move rsp up 8 bytes
+    ret                             # Now caller's register is restored and the return addr is on top
  
 /* 
     Subroutines
