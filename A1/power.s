@@ -7,7 +7,7 @@ input_format: .asciz "%ld"
 base_input_prompt: .asciz "Base input: "
 exponent_input_prompt: .asciz "Exponent input: "
 
-.bss
+.bss 
 .align 8
 base_input: .zero 8
 exponent_input: .zero 8
