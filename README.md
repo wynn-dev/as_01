@@ -15,20 +15,24 @@ function power(x: int, y: int) {
 }
 ```
 
-Spec for factorial subroutine.
+# CSE11C Assignment 2: Recursion
+
+Spec for the factorial subroutine. It takes one non-negative number `n` and returns `n!`. it calls itself with a smaller number until it reaches the stopping case.
 
 ```ts
-// n is a integer and n > 0
-function factorial(n: int) {
-  let result = 1;
-
-  for (let i = 2; i <= n; i++) {
-    result *= i;
+// n is an integer and n >= 0.
+// Returns n! (n × (n - 1) × ... × 1).
+function factorial(n: int): int {
+  if (n <= 1) {
+    return 1;
   }
 
-  return result;
+  // Ask for the factorial of the next smaller number, then multiply by n.
+  // n must be remembered across this call, because the call may overwrite it.
+  return n * factorial(n - 1);
 }
 
+console.log(factorial(0)); // 1
 console.log(factorial(5)); // 120
 ```
 
@@ -36,7 +40,7 @@ console.log(factorial(5)); // 120
 
 Spec for the decoder subroutine. Each 8-byte block contains a character, how many times to print it, and the number of the next block to visit. The highest 2 bytes are ignored.
 
-This is TypeScript-like pseudocode. Numbers here can hold a complete unsigned 64-bit block, and `>>` shifts bits right while filling the left side with zeros. `readBlock` reads 8 bytes from memory; `printCharacter` prints the character represented by an ASCII number.
+ts-like pseudocode. Numbers here can hold a complete unsigned 64-bit block, and `>>` shifts bits right while filling the left side with zeros. `readBlock` reads 8 bytes from memory; `printCharacter` prints the character represented by an ASCII number.
 
 ```ts
 // messageAddress points to the first block of a valid encoded message.
